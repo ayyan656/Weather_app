@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboards.css">
+</head>
+<body>
+<!-- From Uiverse.io by vinodjangid07 -->
+<!-- From Uiverse.io by vinodjangid07 -->
+ <div class="container-logout">
+    <!-- From Uiverse.io by vinodjangid07 -->
+    <button class="Btn">
+    
+        <div class="sign"><svg viewBox="0 0 512 512">
+                <path
+                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                </path>
+            </svg></div>
+    
+        <div class="text">Logout</div>
+    </button>
+ </div>
+ <!-- Weather API integration -->
+<div class="container">
+    <h1 class="title">Weather App</h1>
+    <div class="search-box">
+        <input type="text" id="city-input" placeholder="Enter city name" list="city-suggestions">
+        <datalist id="city-suggestions">
+            <!-- City suggestions will be dynamically added here -->
+        </datalist>
+        <button id="search-btn">Search</button>
+    </div>
+    <div id="weather-info">
+        <!-- Weather data will be displayed here -->
+    </div>
+</div>
+ <script>
+    const mybtn = document.querySelector('.Btn');
+    mybtn.addEventListener("click", async () => {
+            try {
+                // Call backend logout route to clear session and cookies
+                await fetch('http://localhost:3000/api/users/logout', {
+                    method: 'POST',
+                    credentials: 'include' // this is important for sending cookies
+                });
+
+                // Clear localStorage or sessionStorage (if you're storing token)
+                localStorage.removeItem("token");
+                sessionStorage.clear(); // optional
+
+                // Redirect to login page
+                window.location.href = "/login";
+            } catch (error) {
+                console.error("Logout failed:", error);
+            }
+        });
+    const apiKey = "c76b7723837241568e935004251604"; // Your WeatherAPI key
+    const apiUrl = "http://api.weatherapi.com/v1";
+    const searchBtn = document.getElementById("search-btn");
+    const cityInput = document.getElementById("city-input");
+    const citySuggestions = document.getElementById("city-suggestions");
+    const weatherInfo = document.getElementById("weather-info");
+
+    // Function to fetch city name suggestions
+    async function fetchCitySuggestions(query) {
+        try {
+            const response = await fetch(`${apiUrl}/search.json?key=${apiKey}&q=${query}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch city suggestions.");
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching city suggestions:", error);
+            return [];
+        }
+    }
+
+    // Function to display city name suggestions
+    function displayCitySuggestions(suggestions) {
+        citySuggestions.innerHTML = ""; // Clear previous suggestions
+        suggestions.forEach((city) => {
+            const option = document.createElement("option");
+            option.value = `${city.name}, ${city.region}, ${city.country}`;
+            citySuggestions.appendChild(option);
+        });
+    }
+
+    // Event listener for city input
+    cityInput.addEventListener("input", async () => {
+        const query = cityInput.value.trim();
+        if (query.length >= 3) { // Fetch suggestions only if the query has at least 3 characters
+            const suggestions = await fetchCitySuggestions(query);
+            displayCitySuggestions(suggestions);
+        } else {
+            citySuggestions.innerHTML = ""; // Clear suggestions if the query is too short
+        }
+    });
+
+    // Function to fetch weather data
+    async function fetchWeather(city) {
+        try {
+            const response = await fetch(`${apiUrl}/current.json?key=${apiKey}&q=${city}&aqi=yes`);
+            if (!response.ok) {
+                throw new Error("City not found. Please try again.");
+            }
+            const data = await response.json();
+            displayWeather(data);
+        } catch (error) {
+            weatherInfo.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+
+    // Function to display weather data
+    function displayWeather(data) {
+        const { name, region, country } = data.location;
+        const { temp_c, condition } = data.current;
+
+        weatherInfo.innerHTML = `
+        <h2>${name}, ${region}, ${country}</h2>
+        <p>Temperature: ${temp_c}°C</p>
+        <p>Condition: ${condition.text}</p>
+        <img src="${condition.icon}" alt="${condition.text}">
+    `;
+    }
+
+    // Event listener for the search button
+    searchBtn.addEventListener("click", () => {
+        const city = cityInput.value.trim();
+        if (city) {
+            fetchWeather(city);
+        } else {
+            weatherInfo.innerHTML = `<p style="color: red;">Please enter a city name.</p>`;
+        }
+    });
+
+    // Optional: Fetch weather for a default city when the page loads
+    fetchWeather("Lahore");
+    
+ </script>
+</body>
+</html>

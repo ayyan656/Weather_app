@@ -1,0 +1,165 @@
+/* From Uiverse.io by vinodjangid07 */
+body{
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container-logout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 30px;
+}
+/* From Uiverse.io by vinodjangid07 */
+.Btn {
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgb(255, 65, 65);
+}
+
+/* plus sign */
+.sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign svg {
+    width: 17px;
+}
+
+.sign svg path {
+    fill: white;
+}
+
+/* text */
+.text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition-duration: .3s;
+}
+
+/* hover effect on button width */
+.Btn:hover {
+    width: 125px;
+    border-radius: 40px;
+    transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+    width: 30%;
+    transition-duration: .3s;
+    padding-left: 0px;
+}
+
+/* hover effect button's text */
+.Btn:hover .text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 10px;
+}
+
+/* button click effect*/
+.Btn:active {
+    transform: translate(2px, 2px);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    --background: linear-gradient(to right, #13b37f 0%, #11a3c8 100%);
+      width: 270px;
+      height: 364px;
+      padding: 20px;
+      border-radius: 0.7rem;
+      overflow: visible;
+      background: #f7ba2b;
+      background: var(--background);
+      position: relative;
+      z-index: 1;
+        
+}
+
+
+.title{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 15px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #121212;
+    text-align: center;
+    font-family:system-ui;
+    ;
+}
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.search-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin: 10px;
+}
+
+#city-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#search-btn {
+    width: 30%;
+    padding: 10px;
+    background: linear-gradient(to right, #11a3c8, #13b37f);
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+#weather-info {
+    font-size: 18px;
+    color: #333;
+}
